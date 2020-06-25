@@ -1,4 +1,4 @@
-#include "kernel.h"
+#include "kernel/kernel.h"
 
 
 
@@ -15,5 +15,5 @@ Kernel::~Kernel()
 void
 Kernel::init()
 {
-	mInfo.ramData
+
 }

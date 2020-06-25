@@ -1,12 +1,14 @@
-#include "kernel.h"
+#include "kernel/kernel.h"
 
 
 extern "C"
 {
 	void kmain(void)
 	{
-		//Kernel kern;
-		//kern.init();
+		Kernel kern;
+		kern.init();
+
+
 
 		const char *str = "my first kernel";
 		char *vidptr = (char*)0xb8000; 	//video mem begins here.

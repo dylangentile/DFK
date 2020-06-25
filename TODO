@@ -1,0 +1,7 @@
+
+Working Module Loading
+Seperate IO into Module
+Seperate VGA into Module
+
+Make a linux driver module, a module that loads linux modules
+ -- could be complicated an unfeasible. (probably since linux is so bloated)

@@ -6,10 +6,10 @@ ASMFLAGS := -felf32
 
 LD := ld.lld 
 LDFLAGS := 
-OBJS := kmain.o main.o
+OBJS := main.o kmain.o kernel.o kio.o 
 
 
-.PHONY: all clean
+.PHONY: all clean depend
 
 all: kernel
 
@@ -17,12 +17,19 @@ all: kernel
 kernel: $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o kernel
 
-
-kmain.o: kmain.cpp
-	$(CC) $(CFLAGS) -c kmain.cpp
-
-main.o: main.s
+main.o: main.s kmain.cpp
 	$(ASM) $(ASMFLAGS) main.s
 
+
+
+depend:
+	$(CC) $(CFLAGS) -MM -E *.cpp > .depend
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -o $@ -c $<
+
 clean:
-	rm $(OBJS)
+	-rm *.o
+	-rm kernel
+
+#include .depend
