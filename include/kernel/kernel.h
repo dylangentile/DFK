@@ -1,15 +1,6 @@
 #pragma once
-#include "module.h"
-
-typedef struct RamData
-{
-	
-} RamData;
-
-typedef struct SystemInfo
-{
-	long ramsize;
-} SystemInfo;
+#include <kernel/alloc.h>
+#include <kernel/module.h>
 
 
 class Kernel
@@ -19,8 +10,4 @@ public:
 	~Kernel();
 
 	void init();
-
-	//void load_module(Module*);
-private:
-	SystemInfo mInfo;
 };

@@ -1,26 +1,50 @@
 #pragma once
 #include "kernel/device.h"
 
+extern "C"
+{
+
+	typedef enum
+	{
+		kModuleType_NULL,
+		kModuleType_FileSystem
+	}ModuleType;
+
+
+}
+
+
+
+
+
+
+
+
+
+
 class Module
 {
+protected: 
+	Module(ModuleType type);
 public:
-	Module() = delete;
-	
+	~Module();
 
+	const ModuleType mType;
 };
 
 
 class FileSystem : public Module
 {
+protected:	
+	FileSystem();
 public:
-	FileSystem() = delete;
 	~FileSystem();
 
 
 	class FileDescriptor
 	{
 	public:
-		FileDescriptor() = delete;
+		FileDescriptor();
 		~FileDescriptor();
 
 		/*
@@ -30,7 +54,7 @@ public:
 		virtual const char* getPath() = 0; //returns the path to the file
 		
 
-		virtual int getSize() = 0; //get the size of the file
+		virtual size_t getSize() = 0; //get the size of the file
 
 		//loads the file into memory(blocking) The kernel guarentees that the 
 		//appropriate amount of memory (according to getSize) will be availible.
@@ -39,7 +63,7 @@ public:
 		virtual void loadFile(void* location/*, void(*callback)(void)*/) = 0;
 
 		//write to the file descriptor
-		virtual bool write(const void* bytes, int size); 
+		virtual bool write(const void* bytes, int size) = 0; 
 
 	};
 
@@ -48,8 +72,13 @@ public:
 
 	/*
 	The device must be formatted with the appropriate filesystem.
+	Note that this should be implemented as a pure function in the sense that
+	it does not modify member variables of the class. IE format literally just
+	formats the disk with the filesystem, and that is it. The disk is not mounted
+	This function is only in this class to keep things organized, not to tie
+	it to state.
 	*/
-	virtual void format(DataDevice* dataDevice) = 0;
+	virtual void format(LogicalDataDevice* dataDevice) = 0;
 
 	/*
 	the file system module is supplied a DataDevice by the the kernel.
@@ -57,7 +86,7 @@ public:
 	If it fails to mount the device it must have left it untouched,  and 
 	must return false.
 	*/
-	virtual bool initialize(DataDevice* dataDevice) = 0;
+	virtual bool mount(LogicalDataDevice* dataDevice) = 0;
 
 	/*
 	return true/false for success/failure to open file.
@@ -69,11 +98,12 @@ public:
 	close the file descriptor. Most likely you allocated it in open, and you're
 	deleteing here.
 	*/
-	virtual bool close(FileDescriptor** fd);
+	virtual bool close(FileDescriptor** fd) = 0;
 
 
 
 
 };
+
 
 

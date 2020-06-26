@@ -1,16 +1,20 @@
-ENVS := CC=clang++ ASM=/opt/local/bin/nasm LD=ld.lld KINCLUDE=$(PWD)/include/
+ENVS := CC=clang++ CFLAGS="-target i386-unknown-elf -O1 -fno-rtti -fno-exceptions -nostdlib -Wall" LD=ld.lld KINCLUDE=$(PWD)/include/ 
 
-.PHONY: all clean
+.PHONY: modules kernel clean
 
 all: kernel modules
 
-
-kernel:
+kernel: cstdlib
 	$(MAKE) -C src/ -e $(ENVS)
 
-modules:
+modules: cstdlib
 	$(MAKE) -C modules/ -e  $(ENVS)
 
+cstdlib:
+	$(MAKE) -C cstdlib/ -e  $(ENVS)
+
+
+linkmodules: 
 
 clean:
 	$(MAKE) -C src/ clean

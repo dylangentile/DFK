@@ -1,12 +1,15 @@
+ENVS := CC=$(CC) CFLAGS="$(CFLAGS)" LD=$(LD) KINCLUDE=$(KINCLUDE)
 
-ENVS := CC=$(CC) ASM=$(ASM) LD=$(LD)
+.PHONY: stupidfs ramdisk all
 
-.PHONY: all
+all: ramdisk stupidfs
 
-all: ramdisk
-
-ramdisk:
+ramdisk: 
 	$(MAKE) -C ramdisk/ -e $(ENVS)
 
+stupidfs:
+	$(MAKE) -C stupidfs/ -e $(ENVS)
+
 clean:
-	$(MAKE) -C ramdisk clean
+	$(MAKE) -C ramdisk/ clean
+	$(MAKE) -C stupidfs/ clean

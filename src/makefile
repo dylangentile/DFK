@@ -1,15 +1,16 @@
 CC := clang++
-CFLAGS := -target i386-unknown-elf -O1 -fno-rtti -fno-exceptions -nostdlib -Wall -I../include
+CFLAGS := -target i386-unknown-elf -O1 -fno-rtti -fno-exceptions -nostdlib -Wall
+KINCLUDE := ../include
 
 ASM := /opt/local/bin/nasm
 ASMFLAGS := -felf32
 
 LD := ld.lld 
 LDFLAGS := 
-OBJS := main.o kmain.o kernel.o kio.o 
+OBJS := main.o kmain.o kernel.o kio.o alloc.o device.o module.o
 
 
-.PHONY: all clean depend
+.PHONY: kernel clean depend
 
 all: kernel
 
@@ -23,10 +24,10 @@ main.o: main.s kmain.cpp
 
 
 depend:
-	$(CC) $(CFLAGS) -MM -E *.cpp > .depend
+	$(CC) -I$(KINCLUDE) $(CFLAGS) -MM -E *.cpp > .depend
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) -I$(KINCLUDE) $(CFLAGS) -o $@ -c $<
 
 clean:
 	-rm *.o
