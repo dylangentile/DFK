@@ -12,7 +12,7 @@ extern "C"
 
 	typedef struct
 	{
-		long driverId;
+		uint32_t driverId;
 		DeviceType deviceType;
 	}DriverInfo;
 }

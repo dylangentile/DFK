@@ -1,5 +1,5 @@
-#include "kernel/kio.h"
-#include "cstdlib/string.h"
+#include <kernel/kio.h>
+#include <string.h>
 
 int
 write(int fd, const void* data, int bytes)

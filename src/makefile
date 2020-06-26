@@ -16,7 +16,7 @@ all: kernel
 
 
 kernel: $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) -o kernel
+	$(LD) $(LDFLAGS) $(OBJS) $(STDLIBOBJ) -o kernel
 
 main.o: main.s kmain.cpp
 	$(ASM) $(ASMFLAGS) main.s
@@ -27,7 +27,7 @@ depend:
 	$(CC) -I$(KINCLUDE) $(CFLAGS) -MM -E *.cpp > .depend
 
 %.o: %.cpp
-	$(CC) -I$(KINCLUDE) $(CFLAGS) -o $@ -c $<
+	$(CC) -I$(KINCLUDE) -I$(STDLIBINC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	-rm *.o

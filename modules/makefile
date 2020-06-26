@@ -5,11 +5,17 @@ ENVS := CC=$(CC) CFLAGS="$(CFLAGS)" LD=$(LD) KINCLUDE=$(KINCLUDE)
 all: ramdisk stupidfs
 
 ramdisk: 
-	$(MAKE) -C ramdisk/ -e $(ENVS)
+	$(info )
+	$(info ********* Building RamDisk Kernel Module  *********)
+	$(info )
+	@$(MAKE) -C ramdisk/ -e $(ENVS)
 
 stupidfs:
-	$(MAKE) -C stupidfs/ -e $(ENVS)
+	$(info )
+	$(info ********* Building StupidFS Kernel Module *********)
+	$(info )
+	@$(MAKE) -C stupidfs/ -e $(ENVS)
 
 clean:
-	$(MAKE) -C ramdisk/ clean
-	$(MAKE) -C stupidfs/ clean
+	@$(MAKE) -C ramdisk/ clean
+	@$(MAKE) -C stupidfs/ clean

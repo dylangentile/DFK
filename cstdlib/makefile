@@ -5,7 +5,10 @@ ENVS := CC=$(CC) CFLAGS="$(CFLAGS)" LD=$(LD) KINCLUDE=$(KINCLUDE)
 all: cstdlib
 
 cstdlib:
-	$(MAKE) -C src/ -e $(ENVS)
+	$(info )
+	$(info ********* Building cstdlib.o  *********)
+	$(info )
+	@$(MAKE) -C src/ -e $(ENVS)
 
 clean:
-	$(MAKE) -C src/ clean
+	@$(MAKE) -C src/ clean

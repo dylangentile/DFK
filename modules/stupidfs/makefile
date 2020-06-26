@@ -1,10 +1,10 @@
 .PHONY: all
 
-all: ramdisk.ko
+all: stupidfs.ko
 
-ramdisk.ko: ramdisk.cpp $(KINCLUDE)/kernel/device.h
-	$(CC) $(CFLAGS) -I$(KINCLUDE) -c ramdisk.cpp -o ramdisk.ko
+stupidfs.ko: stupidfs.cpp
+	$(CC) $(CFLAGS) -I$(KINCLUDE) -I$(STDLIBINC) -c stupidfs.cpp -o stupidfs.ko
 
 clean:
 	-rm *.o
-	-rm ramdisk.ko
+	-rm stupidfs.ko

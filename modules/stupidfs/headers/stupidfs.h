@@ -1,5 +1,5 @@
 #include <kernel/module.h>
-#include <cstdlib/string.h>
+#include <string.h>
 
 class StupidFS : public FileSystem
 {
@@ -10,15 +10,20 @@ public:
 	class StupidFD : public FileDescriptor
 	{
 	public:
-		StupidFD(size_t size) : mSize(size) {}
+		StupidFD(StupidFS* p, size_t size, const char* path);
 		~StupidFD();
 
 		virtual const char* getPath() override;
-		virtual int getSize() override;
+		virtual size_t getSize() override;
 		virtual void loadFile(void* location/*, void(*callback)(void)*/) override;
-		virtual bool write(const void* bytes, int size) override;
+		virtual bool write(const void* bytes, size_t size) override;
 	private:
 		const size_t mSize;
+		void* mData;
+		char* mPath;
+
+		StupidFS* parent;
+
 
 	};
 
@@ -26,6 +31,10 @@ public:
 	virtual bool mount(LogicalDataDevice* dataDevice) override;
 	virtual bool open(const char* path, FileDescriptor** fd) override;
 	virtual bool close(FileDescriptor** fd) override;
+private:
+	friend class StupidFD;
+
+	bool overwrite(void* address, const void* bytes, size_t size);
 
 };
 

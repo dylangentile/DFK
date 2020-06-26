@@ -1,5 +1,5 @@
 #pragma once
-#include "kernel/device.h"
+#include <kernel/device.h>
 
 extern "C"
 {
@@ -63,7 +63,7 @@ public:
 		virtual void loadFile(void* location/*, void(*callback)(void)*/) = 0;
 
 		//write to the file descriptor
-		virtual bool write(const void* bytes, int size) = 0; 
+		virtual bool write(const void* bytes, size_t size) = 0; 
 
 	};
 
