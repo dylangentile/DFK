@@ -1,4 +1,4 @@
-ENVS := CC=clang++ CFLAGS="-target i386-unknown-elf -O1 -fno-rtti -fno-exceptions -nostdlib -Wall" LD=ld.lld KINCLUDE=$(PWD)/include/ STDLIBINC=$(PWD)/cstdlib/include STDLIBOBJ=$(PWD)/cstdlib/src/cstdlib.o
+ENVS := CC=clang++ CFLAGS=" -std=c++11 -target x86_64-unknown-elf -O0 -g -ffreestanding -fno-rtti -fno-exceptions -nostdlib -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -Wall" LD=ld.lld KINCLUDE=$(PWD)/include/ STDLIBINC=$(PWD)/cstdlib/include STDLIBOBJ=$(PWD)/cstdlib/src/cstdlib.o
 
 .PHONY: modules kernel cstdlib clean
 

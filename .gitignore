@@ -6,6 +6,7 @@
 .idea/
 builds/
 build/
+debugging/
 cmake-build-debug/
 # Windows thumbnail cache files
 Thumbs.db
