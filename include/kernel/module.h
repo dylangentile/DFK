@@ -7,7 +7,8 @@ extern "C"
 	typedef enum
 	{
 		kModuleType_NULL,
-		kModuleType_FileSystem
+		kModuleType_FileSystem,
+		kModuleType_TTY
 	}ModuleType;
 
 
@@ -32,6 +33,7 @@ public:
 	const ModuleType mType;
 };
 
+#include <device/data_device.h>
 
 class FileSystem : public Module
 {

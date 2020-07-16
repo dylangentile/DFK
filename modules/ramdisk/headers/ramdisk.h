@@ -1,4 +1,4 @@
-#include <kernel/device.h>
+#include <device/data_device.h>
 #include <kernel/alloc.h>
 
 class RamDisk : public LogicalDataDevice

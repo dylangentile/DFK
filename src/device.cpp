@@ -10,6 +10,7 @@ Device::~Device()
 
 }
 
+#include <device/data_device.h>
 
 PhysicalDataDevice::PhysicalDataDevice() : Device(kDeviceType_PhysicalDataDevice) 
 {
@@ -31,3 +32,18 @@ LogicalDataDevice::~LogicalDataDevice()
 {
 	
 }
+
+
+#include <device/graphics_device.h>
+
+GraphicsDevice::GraphicsDevice() : Device(kDeviceType_GraphicsDevice)
+{
+
+}
+
+GraphicsDevice::~GraphicsDevice()
+{
+
+}
+
+

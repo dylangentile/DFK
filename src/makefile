@@ -7,22 +7,32 @@ ASMFLAGS := -felf64
 
 LD := ld.lld 
 LDFLAGS := -Tlink.ld
-OBJS := bootstrap.o main.o kmain.o kernel.o kio.o alloc.o device.o module.o
+OBJS := main.o kmain.o kernel.o kio.o alloc.o device.o module.o
 
 
 .PHONY: kernel clean depend
 
-all: kernel
+all: image
+
+image: kernel
+	@dd if=/dev/zero of=disk.img count=128 bs=1048576
+	@dd if=mbr.sys of=disk.img conv=notrunc 
+	@dd if=kernel of=disk.img bs=512 seek=16 conv=notrunc
+
+kernel: rawkernel mbr.sys pure64.sys
+	-rm kernel
+	cat pure64.sys rawkernel > kernel
 
 
-kernel: $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) $(STDLIBOBJ) -o kernel
+rawkernel: $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) $(STDLIBOBJ) -o rawkernel_with_header
+	dd if=rawkernel_with_header of=rawkernel bs=1 iseek=0x1000 #we have to delete the ELF header
+	rm rawkernel_with_header
+
 
 main.o: main.s kmain.cpp
 	$(ASM) $(ASMFLAGS) main.s
 
-bootstrap.o: bootstrap.s
-	$(ASM) $(ASMFLAGS) bootstrap.s
 
 
 
@@ -34,6 +44,6 @@ depend:
 
 clean:
 	-rm *.o
-	-rm kernel
+	-rm kernel rawkernel disk.img
 
 #include .depend

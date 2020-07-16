@@ -1,20 +1,13 @@
 ;;kernel.asm
-
-;nasm directive - 32 bit
 bits 64
 section .text
-        ;multiboot spec
-        align 4
-        dd 0x1BADB002            ;magic
-        dd 0x00                  ;flags
-        dd - (0x1BADB002 + 0x00) ;checksum. m+f+c should be zero
 
 global _start
 extern kmain	       
 
 
 _start:
-  	cli 	; disable interrupts
+	cli
   	mov 	rsp, stack_space	;set stack pointer			
   	call 	kmain
   	hlt		 	;halt the CPU

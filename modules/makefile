@@ -1,8 +1,8 @@
 ENVS := CC=$(CC) CFLAGS="$(CFLAGS)" LD=$(LD) KINCLUDE=$(KINCLUDE)
 
-.PHONY: stupidfs ramdisk all
+.PHONY: stupidfs ramdisk vga all
 
-all: ramdisk stupidfs
+all: ramdisk stupidfs vga
 
 ramdisk: 
 	$(info )
@@ -16,6 +16,13 @@ stupidfs:
 	$(info )
 	@$(MAKE) -C stupidfs/ -e $(ENVS)
 
+vga:
+	$(info )
+	$(info ********* Building VGA Kernel Module *********)
+	$(info )
+	@$(MAKE) -C vga/ -e $(ENVS)
+
 clean:
 	@$(MAKE) -C ramdisk/ clean
 	@$(MAKE) -C stupidfs/ clean
+	@$(MAKE) -C vga/ clean
