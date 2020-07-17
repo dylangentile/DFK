@@ -44,6 +44,7 @@ depend:
 
 clean:
 	-rm *.o
-	-rm kernel rawkernel disk.img
+	-rm kernel rawkernel
+	-rm *.img
 
 #include .depend

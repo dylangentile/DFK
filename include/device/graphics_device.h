@@ -23,16 +23,27 @@ public:
 		
 	};
 
+	
+	struct RGB
+	{
+		uint8_t r;
+		uint8_t g;
+		uint8_t b;
+	};
+
+		
+
+
 	virtual bool init() = 0;
 	 //graphics driver should populate this
 	virtual void getInfo(GD_Info* info) = 0;
 
 	virtual void setMode(uint16_t modeNum) = 0; //based upon modeList location 
 
-	//the sizeof color is the current mode's color bits * the color depth, rounded to nearest byte
-	virtual void putPixel(const uint16_t x, const uint16_t y, void* color) = 0;
+	//It is up to the graphics driver to convert the RGB into the properly mapped color.
+	virtual void putPixel(const uint16_t x, const uint16_t y, const RGB color) = 0;
 
 	//for double buffering. The buffer should be the size of the videoMemory, but if it isn't,
 	// just copy as much as you can.
-	virtual void putPixelBuffer(const void* buf, const size_t bufSize) = 0;
+	virtual void putPixelBuffer(const RGB* buf, const size_t bufSize) = 0;
 };

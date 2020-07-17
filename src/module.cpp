@@ -11,6 +11,7 @@ Module::~Module()
 
 }
 
+#include <module/fs_module.h>
 
 FileSystem::FileSystem() : Module(kModuleType_FileSystem)
 {
