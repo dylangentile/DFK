@@ -3,7 +3,9 @@
 
 #include <kernel/kernint.h>
 
-kuintmax_t CHTTP_hash(const void* str, size_t len);
+kuintmax_t simple_hash(const void* str, size_t len);
+
+
 
 
 

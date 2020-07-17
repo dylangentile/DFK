@@ -3,7 +3,7 @@
 #define CHTTP_HASHMAP_PRIME 15485863
 
 kuintmax_t
-CHTTP_hash(const void* str, size_t len)
+simple_hash(const void* str, size_t len)
 {
     kuintmax_t result = 1;
 

@@ -26,7 +26,7 @@ kernel: rawkernel mbr.sys pure64.sys
 
 rawkernel: $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) $(STDLIBOBJ) -o rawkernel_with_header
-	dd if=rawkernel_with_header of=rawkernel bs=1 iseek=0x1000 #we have to delete the ELF header
+	@dd if=rawkernel_with_header of=rawkernel bs=1 iseek=0x1000 #we have to delete the ELF header
 	rm rawkernel_with_header
 
 

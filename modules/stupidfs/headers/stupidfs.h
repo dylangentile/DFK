@@ -1,4 +1,4 @@
-#include <kernel/module.h>
+#include <module/fs_module.h>
 #include <string.h>
 
 class StupidFS : public FileSystem
