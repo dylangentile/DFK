@@ -3,4 +3,4 @@
 #include <stdint.h>
 
 
-typedef uint32_t kuintmax_t;
+typedef uint64_t kuintmax_t;

@@ -8,6 +8,7 @@ extern "C"
 		Kernel kern;
 		kern.init();
 
+		
 		while(1)
 		{
 			

@@ -1,6 +1,15 @@
 #include <kernel/kernel.h>
 #include <kernel/kio.h>
 #include <kernel/cpuio.h>
+#include <string.h>
+
+void kernel_panic()
+{
+	while(1)
+	{
+		
+	}
+}
 
 
 Kernel::Kernel()
@@ -38,14 +47,10 @@ Kernel::init()
 	mP64.APIC_ID = 		(uint8_t*) 0x5100;
 
 
-	uint8_t* video_pointer = (uint8_t*)*mP64.VIDEO_BASE;
-	for(int i = 0; i < 0x400 * 0x300 * 3;)
-	{
-		video_pointer[i] = 0x1f;
-		i++;
-		video_pointer[i] = 0x1f;
-		i++;
-		video_pointer[i] = 0xEE;
-		i++;
-	}
+
+	vdev = new VGA_Device(&mP64);
+
+	setGd(static_cast<GraphicsDevice*>(vdev));
+	klog("Graphics Initialized...");
+
 }

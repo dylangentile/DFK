@@ -1,7 +1,12 @@
 #pragma once
 #include <kernel/alloc.h>
 #include <kernel/module.h>
+#include "../modules/vga/vga.h"
 
+
+
+
+void kernel_panic();
 
 typedef struct 
 {
@@ -28,6 +33,7 @@ typedef struct
 
 }Pure64Data;
 
+
 class Kernel
 {
 public:
@@ -37,4 +43,5 @@ public:
 	void init();
 private:
 	Pure64Data mP64;
+	VGA_Device* vdev;
 };
