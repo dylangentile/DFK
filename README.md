@@ -16,6 +16,15 @@ This modularized approach is exemplified by the `modules/` directory. In the mod
 ## Images
 The makefile in the root directory has the following usefule rules: `image`, `kernel`, `modules`, `clean`, and `all`. `all` builds `image`, `kernel`, and `modules`. `clean` erases all object and image files. `kernel` builds the most basic kernel, and `modules` all of the necessary functionality. `image` is the tricky one. It generates a disk image for the kernel and the modules you specify. All of the modules are placed into the image in a filesystem agnostic manner. 
 
+## Memory
+The kernel requires a minimum of 256 MiB of RAM.
+
+### Map
+0x000000-0x3FFFFF Pure64 and kernel bootstrap
+0x400000 - Kernel
+0x800000 - Drivers/Modules \*.ko
+... - Free Memory
+
 
 
 ## Resources

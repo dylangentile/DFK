@@ -6,7 +6,7 @@ ASM := /opt/local/bin/nasm
 ASMFLAGS := -felf64
 
 LD := ld.lld 
-LDFLAGS := #-Tlink.ld
+LDFLAGS := -Tlink.ld
 OBJS := main.o kmain.o kernel.o kio.o alloc.o device.o module.o
 
 

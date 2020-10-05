@@ -3,5 +3,8 @@ Working Module Loading
 Seperate IO into Module
 Seperate VGA into Module
 
+src/link.ld -- why the magic number 401000? Is this the same on all systems? Do we know that the distance between the beginning of the binary and the entry is always 1000?
+
+
 Make a linux driver module, a module that loads linux modules
- -- could be complicated an unfeasible. (probably since linux is so bloated)
+ -- could be complicated and unfeasible. (probably since linux is so bloated)

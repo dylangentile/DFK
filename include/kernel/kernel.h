@@ -1,7 +1,6 @@
 #pragma once
 #include <kernel/alloc.h>
 #include <kernel/module.h>
-#include "../modules/vga/vga.h"
 
 
 
@@ -43,5 +42,4 @@ public:
 	void init();
 private:
 	Pure64Data mP64;
-	VGA_Device* vdev;
 };

@@ -48,9 +48,4 @@ Kernel::init()
 
 
 
-	vdev = new VGA_Device(&mP64);
-
-	setGd(static_cast<GraphicsDevice*>(vdev));
-	klog("Graphics Initialized...");
-
 }

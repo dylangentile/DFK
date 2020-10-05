@@ -2,7 +2,7 @@ ENVS := CC=clang++ CFLAGS=" -std=c++11 -target x86_64-unknown-elf -O0 -g -ffrees
 
 .PHONY: modules kernel bootstrap cstdlib clean
 
-all: kernel bootstrap
+all: modules kernel bootstrap cstdlib
 
 bootstrap:
 	$(info )
@@ -10,13 +10,13 @@ bootstrap:
 	$(info )
 	@$(MAKE) -C src/bootstrap -e $(ENVS)
 
-kernel: modules cstdlib
+kernel: cstdlib
 	$(info )
 	$(info ********* Building Kernel *********)
 	$(info )
 	@$(MAKE) -C src/ -e $(ENVS)
 
-modules: cstdlib
+modules:
 	@$(MAKE) -C modules/ -e  $(ENVS)
 
 cstdlib:

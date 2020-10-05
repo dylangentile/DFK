@@ -2,17 +2,39 @@ import os
 import subprocess
 import shutil
 from enum import Enum
+import argparse
 
-def buildFail():
-	print("\n\nBuild Failed!")
+dms = True
+
+def do_module_select():
+	global dms
+	dms = False
+
+
+
+
+parser = argparse.ArgumentParser(description='Builds the DFK')
+parser.add_argument('--all', dest='all', action='store_const', const=do_module_select, default='', help="builds all")
+
+args = parser.parse_args()
+
+if args.all != '':
+	args.all()
+
+
+def buildFail(msg=""):
+	print("\n{}\n\nBuild Failed!".format(msg))
 	exit()
 
 
 CWD=os.getcwd()
-ENVS = "CC=clang++ CFLAGS=\"-std=c++11 -target x86_64-unknown-elf -O0 -g -ffreestanding -fno-rtti -fno-exceptions -nostdlib -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -Wall\" LD=ld.lld KINCLUDE=" + CWD + "/include/ STDLIBINC="+ CWD + "/cstdlib/include STDLIBOBJ=$(PWD)/cstdlib/src/cstdlib.o"
+ENVS = "CC=clang++ CFLAGS=\"-std=c++11 -target x86_64-unknown-elf -O3 -ffreestanding -fno-rtti -fno-exceptions -nostdlib -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -Wall\" LD=ld.lld KINCLUDE=" + CWD + "/include/ STDLIBINC="+ CWD + "/cstdlib/include STDLIBOBJ=$(PWD)/cstdlib/src/cstdlib.o"
 
+MAX_BOOTSTRAP_SIZE = 0x300000 
+MAX_KERNEL_SIZE =    0x400000
 
-
+KERNEL_LOCATION = 0x400000
+MODULE_LOCATION = 0x800000
 
 def check_command(cmd):
 	make_process = subprocess.Popen(cmd + " --version;", shell=True, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
@@ -57,10 +79,7 @@ which_check("mv")
 
 
 
-the_input = input('clean the build system?\n[Y/n]:')
-if len(the_input) == 0 or the_input[0] != 'n':
-	make("clean", ".")
-	print("\n\n\n");	
+
 
 
 
@@ -74,50 +93,72 @@ class Module(Enum):
 
 chosen = list()
 
+def module_select():
+	global chosen
 
-while True:
-	print("Select Modules:")
-	for item in Module:
-		print('{}: {}'.format(item.value, item.name))
-	print("'d' for done | 'c' for clear")
-	choice = input("$")
-	
-	if len(choice) == 0:
-		continue
+	the_input = input('clean the build system?\n[Y/n]:')
+	if len(the_input) == 0 or the_input[0] != 'n':
+		make("clean", ".")
+		print("\n\n\n");	
 
-	if choice[0] == 'd':
-		print(chosen)
-		choice = input("Confirm [y/N]:")
-		if len(choice) == 0 or choice[0] != 'y':
+	while True:
+		print("Select Modules:")
+		for item in Module:
+			print('{}: {}'.format(item.value, item.name))
+		print("'d' for done | 'c' for clear")
+		choice = input("$")
+		
+		if len(choice) == 0:
 			continue
-		else:
-			break
 
-	if choice[0] == 'c':
-		chosen.clear()
+		if choice[0] == 'd':
+			print(chosen)
+			choice = input("Confirm [y/N]:")
+			if len(choice) == 0 or choice[0] != 'y':
+				continue
+			else:
+				break
 
-	c_val = 0;
-	
+		if choice[0] == 'c':
+			chosen.clear()
+
+		c_val = 0;
+		
+		try:
+			c_val = int(choice)
+		except Exception as e:
+			continue
+
+		if c_val not in chosen:
+			chosen.append(c_val)
+
 	try:
-		c_val = int(choice)
+		os.mkdir(build)
 	except Exception as e:
-		continue
+			i = 6
 
-	if c_val not in chosen:
-		chosen.append(c_val)
+if dms == True:
+	module_select()
+else:
+	make("clean", ".")
+	for x in Module:
+		chosen.append(x.value)
+		
+		
 
-try:
-	os.mkdir(build)
-except Exception as e:
-		i = 6
+make("vga", "modules/") ##temporary
+make("kernel", ".")
+
 
 for it in chosen:
 	the_name = Module(it).name
 	make(the_name, "modules/")
 	os.replace("modules/{}/{}.ko".format(the_name, the_name),"build/" + the_name + ".ko")
 
+
+
 make("bootstrap", ".")
-make("kernel", ".")
+
 
 
 os.replace("src/kernel", "build/kernel")
@@ -162,8 +203,7 @@ for it in chosen:
 	next_offset += SECTOR_SIZE - (next_offset % SECTOR_SIZE)
 	DISK_OFFSET += next_offset
 
-print ('[{}]'.format(', '.join(hex(x) for x in size_list)))
-
+size_list.append(DISK_OFFSET);
 
 header_bytes = bytes()
 header_bytes += module_count.to_bytes(8, byteorder='little')
@@ -176,6 +216,13 @@ header_file.close()
 
 cmd_exec("dd if=build/module_header.bin of=build/disk.img bs=1 oseek=0x800000 conv=notrunc")
 
+if os.path.getsize("build/bootstrap") >= MAX_BOOTSTRAP_SIZE:
+	buildFail("bootstrap binary is too big!")
+
+if os.path.getsize("build/kernel") >= MAX_KERNEL_SIZE:
+	buildFail("kernel binary is too big!")
+
+print ('\n[{}]'.format(', '.join(hex(x) for x in size_list)))
 print("\n\nDONE!")
 
 
